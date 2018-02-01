@@ -7,6 +7,7 @@ use App\People;
 use App\Portfolio;
 use App\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
@@ -16,9 +17,8 @@ class IndexController extends Controller
         $services = Service::all();
         $portfolios = Portfolio::all();
         $peoples = People::all();
-
+        $tags = DB::table('portfolios')->select('filter')->distinct()->get();
         $menu = array();
-
         foreach ($pages as $page) {
             $item = ['title'=>$page->name, 'alias'=>$page->alias];
             array_push($menu, $item);
@@ -38,7 +38,8 @@ class IndexController extends Controller
             'pages'=>$pages,
             'services'=>$services,
             'portfolios'=> $portfolios,
-            'peoples'=>$peoples
+            'peoples'=>$peoples,
+            'tags'=>$tags
         ));
 
     }

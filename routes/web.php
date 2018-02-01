@@ -18,7 +18,14 @@ Route::group(['middleware'=>'web'],function () {
 });
 
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function () {
-    Route::get('/', function () {});
+    Route::get('/', function () {
+        if(view()->exists('admin.index')) {
+            $data = [
+                'title'=>'admin panel'
+            ];
+            return view('admin.index',$data);
+        }
+    });
 
     Route::group(['prefix'=>'pages'], function (){
         Route::get('/', ['uses'=>'PagesController@execute', 'as'=>'pages']);
@@ -62,3 +69,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function () {
 
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
